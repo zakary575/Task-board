@@ -36,3 +36,9 @@ function handleDrop(event, ui) {
 $(document).ready(function () {
 
 });
+
+
+
+$( function() {
+    $( "#task-due" ).datepicker();
+  } );
