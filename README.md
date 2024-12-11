@@ -11,7 +11,7 @@ Task Board
     
     To use the app click the add task button then input the name of the task the due date and a description. It will then appear in the to-do column you can then drag it to in progress and done as you work on the task.
     
-![Screenshot](./Assets/Screenshot.png)
+![Screenshot](./assets/Screenshot.png)
 
 ## Questions
 
