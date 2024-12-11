@@ -7,6 +7,10 @@ const form = $("#modal-form");
 let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
+function saveTasksToStorage(tasks){
+localStorage.setItem("tasks", JSON.stringify(tasks))}
+
+
 // Todo: create a function to generate a unique task id
 function generateTaskId() {}
 
@@ -94,15 +98,11 @@ function handleAddTask(event) {
 
   event.preventDefault();
 
-  // const projectName = projectNameInputEl.val().trim();
-  // const projectType = projectTypeInputEl.val(); // don't need to trim select input
-  // const projectDate = projectDateInputEl.val(); // yyyy-mm-dd format
-
   const newTask = {
     id: crypto.randomUUID(),
-    name: nameInput.val(),
+    name: nameInput.val().trim(),
     dueDate: dueDateInput.val(),
-    descrtiption: descrtiptionInput.val(),
+    descrtiption: descrtiptionInput.val().trim(),
     status: "to-do",
   };
 
@@ -110,10 +110,9 @@ function handleAddTask(event) {
   taskList.push(newTask);
 
   // ? Save the updated projects array to localStorage
-  localStorage.setItem("tasks", JSON.stringify(taskList));
-
+  saveTasksToStorage(taskList)
   // ? Print project data back to the screen
-  renderTaskList(taskList);
+  renderTaskList();
 
   // ? Clear the form inputs
   nameInput.val("");
@@ -124,10 +123,24 @@ function handleAddTask(event) {
 }
 
 // Todo: create a function to handle deleting a task
-function handleDeleteTask(event) {}
+function handleDeleteTask() {
+    const taskId = $(this).attr('data-task-id');
+  
+    // ? Remove project from the array. There is a method called `filter()` for this that is better suited which we will go over in a later activity. For now, we will use a `forEach()` loop to remove the project.
+    taskList.forEach((task) => {
+      if (task.id === taskId) {
+        taskList.splice(taskList.indexOf(task), 1);
+      }
+    });
+  
+    // ? We will use our helper function to save the projects to localStorage
+    saveTasksToStorage(taskList);
+  
+    // ? Here we use our other function to print projects back to the screen
+    renderTaskList();
+  }
 
 // Todo: create a function to handle dropping a task into a new status lane
-function handleDrop(event, ui) {}
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {});
@@ -137,3 +150,4 @@ $(function () {
 });
 
 form.on("submit", handleAddTask);
+
