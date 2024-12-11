@@ -141,13 +141,38 @@ function handleDeleteTask() {
   }
 
 // Todo: create a function to handle dropping a task into a new status lane
+function handleDrop(event, ui) {
+  
+    // ? Get the project id from the event
+    const taskId = ui.draggable[0].dataset.taskId;
+  
+    // ? Get the id of the lane that the card was dropped into
+    const newStatus = event.target.id;
+  
+    for (let task of taskList) {
+      // ? Find the project card by the `id` and update the project status.
+      if (task.id === taskId) {
+        task.status = newStatus;
+      }
+    }
+    // ? Save the updated projects array to localStorage (overwritting the previous one) and render the new project data to the screen.
+    saveTasksToStorage(taskList)
+    printProjectData();
+  }
+
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
-$(document).ready(function () {});
+$(document).ready(function () {
+    renderTaskList()
 
-$(function () {
-  $("#task-due").datepicker();
+    $('#taskDueDate').datepicker({
+        changeMonth: true,
+        changeYear: true,
+      });
+    
+      // ? Make lanes droppable
+      $('.lane').droppable({
+        accept: '.draggable',
+        drop: handleDrop,
+      });
 });
-
-form.on("submit", handleAddTask);
-
