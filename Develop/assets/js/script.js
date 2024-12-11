@@ -1,12 +1,13 @@
 const nameInput = $('#task-name')
 const dueDateInput = $('#task-due')
 const descrtiptionInput = $('#task-description')
+const form = $('#modal-form');
 
 
 
 
 // Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks"));
+let taskList = JSON.parse(localStorage.getItem("tasks"))||[];
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 // Todo: create a function to generate a unique task id
@@ -76,11 +77,58 @@ function renderTaskList() {
         break
     }
 }
+
+  // ? Use JQuery UI to make task cards draggable
+  $('.draggable').draggable({
+    opacity: 0.7,
+    zIndex: 100,
+    helper: function (e) {
+      const original = $(e.target).hasClass('ui-draggable')
+        ? $(e.target)
+        : $(e.target).closest('.ui-draggable');
+      return original.clone().css({
+        width: original.outerWidth(),
+      });
+    },
+  });
 }
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
 
+    console.log(nameInput.val())
+    console.log(dueDateInput.val())
+    console.log(descrtiptionInput.val())
+
+        event.preventDefault();
+      
+        // const projectName = projectNameInputEl.val().trim();
+        // const projectType = projectTypeInputEl.val(); // don't need to trim select input
+        // const projectDate = projectDateInputEl.val(); // yyyy-mm-dd format
+      
+        const newTask = {
+          id: crypto.randomUUID(),
+          name: nameInput.val(),
+          dueDate: dueDateInput.val(),
+          descrtiption: descrtiptionInput.val(),
+          status: 'to-do',
+        };
+      
+        // ? Pull the projects from localStorage and push the new project to the array
+        taskList.push(newTask)
+      
+        // ? Save the updated projects array to localStorage
+        localStorage.setItem('tasks', JSON.stringify(taskList));
+      
+        // ? Print project data back to the screen
+        // renderTaskList()
+        
+        // ? Clear the form inputs
+        nameInput.val('');
+        dueDateInput.val('');
+        descrtiptionInput.val('');
+    
+        $("#formModal").modal("hide")
 }
 
 // Todo: create a function to handle deleting a task
@@ -103,3 +151,6 @@ $(document).ready(function () {
 $( function() {
     $( "#task-due" ).datepicker();
   } );
+  
+  
+form.on('submit', handleAddTask)
