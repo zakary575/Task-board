@@ -157,7 +157,7 @@ function handleDrop(event, ui) {
     }
     // ? Save the updated projects array to localStorage (overwritting the previous one) and render the new project data to the screen.
     saveTasksToStorage(taskList)
-    printProjectData();
+    renderTaskList();
   }
 
 
@@ -165,10 +165,7 @@ function handleDrop(event, ui) {
 $(document).ready(function () {
     renderTaskList()
 
-    $('#taskDueDate').datepicker({
-        changeMonth: true,
-        changeYear: true,
-      });
+    $('#task-due').datepicker();
     
       // ? Make lanes droppable
       $('.lane').droppable({
@@ -176,3 +173,5 @@ $(document).ready(function () {
         drop: handleDrop,
       });
 });
+
+form.on('submit', handleAddTask)
