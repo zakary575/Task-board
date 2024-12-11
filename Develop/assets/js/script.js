@@ -1,3 +1,10 @@
+const nameInput = $('#task-name')
+const dueDateInput = $('#task-due')
+const descrtiptionInput = $('#task-description')
+
+
+
+
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
